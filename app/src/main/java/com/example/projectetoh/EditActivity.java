@@ -16,8 +16,11 @@ public class EditActivity extends AppCompatActivity {
         boolean isDone = getIntent().getBooleanExtra("isDone", false);
         Integer idCode = getIntent().getIntExtra("idCode", 0);
         String description = getIntent().getStringExtra("description");
+        String category =  getIntent().getStringExtra("category");
         String deadline = getIntent().getStringExtra("deadline");
         String notes = getIntent().getStringExtra("notes");
-        fragment.set(new Task(idCode, description, deadline, notes, isDone), position);
+        Task newTask = new Task(idCode, description, deadline, notes, isDone);
+        newTask.setCategory(category);
+        fragment.set(newTask, position);
     }
 }

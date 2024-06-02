@@ -12,6 +12,7 @@ public class ListsFragment extends Fragment {
     public List<Task> ts = new ArrayList<>();
     private boolean isCompletedTasks = false;
 
+    private String category = "All";
     private DBHandler dbHandler;
     public TaskAdapter adapter;
 
@@ -22,7 +23,7 @@ public class ListsFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) isCompletedTasks = bundle.getBoolean("isCompleted", false);
         dbHandler = new DBHandler(view.getContext());
-        ts = dbHandler.readTasks(isCompletedTasks);
+        ts = dbHandler.readTasks(isCompletedTasks, category);
         ts.sort(Task.DEADLINE_IDCODE);
         RecyclerView recyclerView = view.findViewById(R.id.list);
         adapter = new TaskAdapter(view.getContext(), ts, dbHandler);
@@ -33,7 +34,7 @@ public class ListsFragment extends Fragment {
     public void addTask() {
         Task nw = new Task("New");
         nw.setIdCode(dbHandler.getMaxIdCode() + 1);
-        dbHandler.addNewTask(nw.getIdCode(), nw.getDescription(), nw.getDeadline(), nw.getNotes(), nw.isDone() ? 1 : 0);
+        dbHandler.addNewTask(nw);
         ts.add(nw);
         ts.sort(Task.DEADLINE_IDCODE);
         adapter.notifyDataSetChanged();
@@ -42,7 +43,7 @@ public class ListsFragment extends Fragment {
     public void notifyChange() {
         ts.clear();
         List<Task> cur;
-        cur = dbHandler.readTasks(isCompletedTasks);
+        cur = dbHandler.readTasks(isCompletedTasks, category);
         while (cur.size() > 0) {
             Task nw = cur.get(0);
             ts.add(nw);
@@ -53,7 +54,7 @@ public class ListsFragment extends Fragment {
     }
 
     public void change(int position, Task newTask) {
-        dbHandler.updateCourse(newTask.getIdCode(), newTask.getDescription(), newTask.getDeadline(), newTask.getNotes(), newTask.isDone() ? 1 : 0);
+        dbHandler.updateCourse(newTask);
         ts.set(position, newTask);
         ts.sort(Task.DEADLINE_IDCODE);
         adapter.notifyDataSetChanged();
@@ -61,6 +62,11 @@ public class ListsFragment extends Fragment {
 
     public void setIsCompleted(boolean f) {
         isCompletedTasks = f;
+        notifyChange();
+    }
+
+    public void setCategory(String c){
+        category = c;
         notifyChange();
     }
 

@@ -12,6 +12,7 @@ public class Task implements Serializable {
     private Integer idCode = -1;
     private final String description;
     private String notes = "";
+    private String category="All";
     private String deadline = "none";
     private Date date = new Date(1000, 1000, 10000);
     private boolean done = false;
@@ -82,10 +83,17 @@ public class Task implements Serializable {
         return date;
     }
 
-    public boolean expired() {
+    public boolean isExpired() {
         Calendar cal = Calendar.getInstance();
         Date cur = new Date(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH),cal.get(Calendar.YEAR) );
-        return(date.compareTo(cur) > 0);
+        return(date.compareTo(cur) < 0);
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }

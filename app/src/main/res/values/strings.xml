@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Task manager</string>
+    <string name="app_name">Projectetoh</string>
     <string name="goToCompletedBT">Go to finished tasks</string>
     <string name="goToUncompletedBT">Go to active tasks</string>
     <string name="addTaskBT">Add task</string>
@@ -12,4 +12,6 @@
     <string name="saveBT">Save</string>
     <string name="returnBT">Return</string>
     <string name="deleteBT">delete</string>
+    <string name="categoryET">Enter your category here</string>
+    <string name="categoryTX">Category</string>
 </resources>

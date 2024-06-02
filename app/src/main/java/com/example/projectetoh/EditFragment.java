@@ -20,7 +20,7 @@ import java.util.Objects;
 public class EditFragment extends Fragment {
     private Task task;
     private int position;
-    private EditText description, notes;
+    private EditText description, notes, category;
     private EditText deadline;
 
     private DatePickerDialog.OnDateSetListener mDateSetListener = null;
@@ -31,6 +31,7 @@ public class EditFragment extends Fragment {
         Button saveButton = view.findViewById(R.id.saveButton);
         Button returnButton = view.findViewById(R.id.returnButton);
         description = view.findViewById(R.id.description);
+        category = view.findViewById(R.id.category);
         notes = view.findViewById(R.id.notes);
         deadline = view.findViewById(R.id.deadline);
 
@@ -56,6 +57,7 @@ public class EditFragment extends Fragment {
             intent.putExtra("isDone", task.isDone());
             intent.putExtra("isChanged", true);
             intent.putExtra("position", position);
+            intent.putExtra("category", category.getText().toString());
             intent.putExtra("description", description.getText().toString());
             intent.putExtra("deadline", deadline.getText().toString());
             intent.putExtra("notes", notes.getText().toString());
@@ -76,6 +78,7 @@ public class EditFragment extends Fragment {
         this.position = position;
         description.setText(this.task.getDescription());
         notes.setText(this.task.getNotes());
+        category.setText(this.task.getCategory());
         deadline.setText(this.task.getDeadline());
     }
 }

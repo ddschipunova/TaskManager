@@ -7,18 +7,26 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.*;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "tasksDB";
+    private static final String DB_NAME = "taskDB";
     private static final int DB_VERSION = 1;
 
     private static final String TABLE_NAME = "completedTasks";
     private static final String ID_COL = "id";
     private static final String IDCODE_COL = "idCode";
     private static final String DESC_COL = "description";
+    private static final String CATEG_COL = "category";
     private static final String DONE_COL = "done";
     private static final String DEADLINE_COL = "deadline";
     private static final String NOTES_COL = "notes";
@@ -28,34 +36,60 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public void onCreate(SQLiteDatabase db) {
-        String query = "CREATE TABLE " + TABLE_NAME + " (" + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, " + IDCODE_COL + " TEXT," + DESC_COL + " TEXT," + DEADLINE_COL + " TEXT," + NOTES_COL + " TEXT," + DONE_COL + " INTEGER)";
+        String query = "CREATE TABLE " + TABLE_NAME + " (" + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, " + IDCODE_COL + " TEXT," + DESC_COL + " TEXT," + DEADLINE_COL + " TEXT," + CATEG_COL + " TEXT,"+ NOTES_COL + " TEXT," + DONE_COL + " INTEGER)";
         db.execSQL(query);
     }
 
-    public void addNewTask(Integer idCode, String description, String deadline, String notes, Integer done) {
+    public void addNewTask(Task t) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(IDCODE_COL, idCode.toString());
-        values.put(DESC_COL, description);
-        values.put(DEADLINE_COL, deadline);
-        values.put(NOTES_COL, notes);
-        values.put(DONE_COL, done);
+        values.put(IDCODE_COL, t.getIdCode().toString());
+        values.put(DESC_COL, t.getDescription());
+        values.put(CATEG_COL, t.getCategory());
+        values.put(DEADLINE_COL, t.getDeadline());
+        values.put(NOTES_COL, t.getNotes());
+        values.put(DONE_COL, t.isDone());
         db.insert(TABLE_NAME, null, values);
         db.close();
     }
 
-    public List<Task> readTasks(boolean isDone) {
+    public List<Task> readTasks(boolean isDone, String category) {
         String ask = isDone ? "1" : "0";
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursorTasks = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE done = ?", new String[]{ask});
+        Cursor cursorTasks;
+        if(category.equals("All"))
+            cursorTasks= db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE done = ?", new String[]{ask});
+        else
+            cursorTasks= db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE done = ? AND category = ?", new String[]{ask, category});
         List<Task> ts = new ArrayList<>();
         if (cursorTasks.moveToFirst()) {
             do {
-                ts.add(new Task(Integer.valueOf(cursorTasks.getString(1)), cursorTasks.getString(2), cursorTasks.getString(3), cursorTasks.getString(4), (cursorTasks.getInt(5)) == 1));
+                Task t = new Task(Integer.valueOf(cursorTasks.getString(1)), cursorTasks.getString(2), cursorTasks.getString(3), cursorTasks.getString(5), (cursorTasks.getInt(6) == 1));
+                t.setCategory(cursorTasks.getString(4));
+                ts.add(t);
             } while (cursorTasks.moveToNext());
         }
         cursorTasks.close();
         return ts;
+    }
+
+    public List<String> readCategories() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursorTasks = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        TreeSet<String> ts = new TreeSet<String>() ;
+        if (cursorTasks.moveToFirst()) {
+            do {
+                ts.add(cursorTasks.getString(4));
+            } while (cursorTasks.moveToNext());
+        }
+        cursorTasks.close();
+        ts.add("All");
+        List<String> cur = new ArrayList<String>();
+        Iterator<String> itr = ts.iterator();
+        while (itr.hasNext()) {
+            cur.add(itr.next());
+        }
+        return cur;
     }
 
     public void deleteTask(Integer idCode) {
@@ -70,15 +104,16 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void updateCourse(Integer idCode, String description, String deadline, String notes, Integer done) {
+    public void updateCourse(Task t) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(IDCODE_COL, idCode);
-        values.put(DESC_COL, description);
-        values.put(DEADLINE_COL, deadline);
-        values.put(NOTES_COL, notes);
-        values.put(DONE_COL, done);
-        db.update(TABLE_NAME, values, "idCode=?", new String[]{idCode.toString()});
+        values.put(IDCODE_COL, t.getIdCode().toString());
+        values.put(DESC_COL, t.getDescription());
+        values.put(CATEG_COL, t.getCategory());
+        values.put(DEADLINE_COL, t.getDeadline());
+        values.put(NOTES_COL, t.getNotes());
+        values.put(DONE_COL, t.isDone());
+        db.update(TABLE_NAME, values, "idCode=?", new String[]{t.getIdCode().toString()});
         db.close();
     }
 

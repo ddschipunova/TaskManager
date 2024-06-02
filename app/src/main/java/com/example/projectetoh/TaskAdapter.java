@@ -18,12 +18,12 @@ import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private final LayoutInflater inflater;
-    public List<Task> ts;
+    public List<Task> taskList;
     private final DBHandler dbHandler;
     private final Context context;
 
     TaskAdapter(Context context, List<Task> nw, DBHandler db) {
-        this.ts = nw;
+        this.taskList = nw;
         this.dbHandler = db;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
@@ -37,16 +37,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Task task = ts.get(position);
+        Task task = taskList.get(position);
         holder.descriptionTX.setText(task.getDescription());
         holder.deadlineTX.setText(task.getDeadline());
-        if (task.expired())
+        if (task.isExpired())
             holder.deadlineTX.setTextColor(Color.RED);
         holder.doneBT.setChecked(task.isDone());
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, EditActivity.class);
             intent.putExtra("idCode", task.getIdCode());
             intent.putExtra("isDone", task.isDone());
+            intent.putExtra("category", task.getCategory());
             intent.putExtra("position", position);
             intent.putExtra("description", task.getDescription());
             intent.putExtra("deadline", task.getDeadline());
@@ -55,12 +56,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         });
         holder.doneBT.setOnClickListener(v -> {
             task.setDone(!task.isDone());
-            dbHandler.updateCourse(task.getIdCode(), task.getDescription(), task.getDeadline(), task.getNotes(), task.isDone() ? 1 : 0);
-            ts.remove(position);
+            dbHandler.updateCourse(task);
+            taskList.remove(position);
             notifyDataSetChanged();
         });
         holder.deleteBT.setOnClickListener(v -> {
-            ts.remove(position);
+            taskList.remove(position);
             dbHandler.deleteTask(task.getIdCode());
             notifyDataSetChanged();
         });
@@ -68,7 +69,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return ts.size();
+        return taskList.size();
     }
 
 
