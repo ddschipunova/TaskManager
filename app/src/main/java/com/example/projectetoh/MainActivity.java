@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private ListsFragment tasksFragment = new ListsFragment();
     private  String goToUncompleted;
     private  String goToCompleted;
-    private String category = "All";
+    private String category;
     private List<String> categories = null;
     private Boolean current = false;
     private ArrayAdapter<String> adapter;
@@ -30,8 +30,11 @@ public class MainActivity extends AppCompatActivity {
         tasksFragment = (ListsFragment) getSupportFragmentManager().findFragmentById(R.id.listFragment);
         goToUncompleted= this.getResources().getString(R.string.goToUncompletedBT);
         goToCompleted = this.getResources().getString(R.string.goToCompletedBT);
+        category = this.getResources().getString(R.string.allCategory);
         dbHandler = new DBHandler(this);
         categories = dbHandler.readCategories();
+        tasksFragment.setCategory(category);
+        tasksFragment.setBasicCategory(category);
         Button changeButton = this.findViewById(R.id.changeButton);
         changeButton.setText(goToCompleted);
         changeButton.setOnClickListener(v -> {

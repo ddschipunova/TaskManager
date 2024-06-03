@@ -12,7 +12,8 @@ public class ListsFragment extends Fragment {
     public List<Task> ts = new ArrayList<>();
     private boolean isCompletedTasks = false;
 
-    private String category = "All";
+    private String category;
+    private String basicCategory;
     private DBHandler dbHandler;
     public TaskAdapter adapter;
 
@@ -33,6 +34,7 @@ public class ListsFragment extends Fragment {
 
     public void addTask() {
         Task nw = new Task("New");
+        nw.setCategory(basicCategory);
         nw.setIdCode(dbHandler.getMaxIdCode() + 1);
         dbHandler.addNewTask(nw);
         ts.add(nw);
@@ -70,4 +72,7 @@ public class ListsFragment extends Fragment {
         notifyChange();
     }
 
+    public void setBasicCategory(String basicCategory) {
+        this.basicCategory = basicCategory;
+    }
 }

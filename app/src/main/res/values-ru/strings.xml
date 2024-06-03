@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Task manager</string>
+    <string name="goToCompletedBT">Перейти к выполненым заданиям</string>
+    <string name="goToUncompletedBT">Перейти к активным заданиям</string>
+    <string name="addTaskBT">Добавить задание</string>
+    <string name="notesTV">Заметки: </string>
+    <string name="notesET">Введите заметки</string>
+    <string name="deadlineTV">Дэдлайн: </string>
+    <string name="deadlineET">Введите дэдлайн</string>
+    <string name="taskTV">Задание: </string>
+    <string name="taskET">Введите задание</string>
+    <string name="saveBT">Сохранить</string>
+    <string name="returnBT">Отмена</string>
+    <string name="deleteBT">Удалить</string>
+    <string name="categoryET">Введите категорию</string>
+    <string name="categoryTX">Категория</string>
+    <string name="allCategory">Все</string>
+</resources>

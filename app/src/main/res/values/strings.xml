@@ -14,4 +14,5 @@
     <string name="deleteBT">delete</string>
     <string name="categoryET">Enter your category here</string>
     <string name="categoryTX">Category</string>
+    <string name="allCategory">All</string>
 </resources>
