@@ -12,8 +12,8 @@ public class ListsFragment extends Fragment {
     public List<Task> ts = new ArrayList<>();
     private boolean isCompletedTasks = false;
 
-    private String category;
-    private String basicCategory;
+    private String category = "All";
+    private String basicCategory = "";
     private DBHandler dbHandler;
     public TaskAdapter adapter;
 

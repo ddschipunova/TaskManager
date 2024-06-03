@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Projectetoh</string>
+    <string name="app_name">Task manager</string>
     <string name="goToCompletedBT">Go to finished tasks</string>
     <string name="goToUncompletedBT">Go to active tasks</string>
     <string name="addTaskBT">Add task</string>

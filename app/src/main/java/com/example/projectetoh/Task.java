@@ -85,7 +85,7 @@ public class Task implements Serializable {
 
     public boolean isExpired() {
         Calendar cal = Calendar.getInstance();
-        Date cur = new Date(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH),cal.get(Calendar.YEAR) );
+        Date cur = new Date(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1,cal.get(Calendar.YEAR) );
         return(date.compareTo(cur) < 0);
     }
 

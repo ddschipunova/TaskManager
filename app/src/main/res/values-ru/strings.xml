@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Task manager</string>
+    <string name="app_name">Projectetoh</string>
     <string name="goToCompletedBT">Перейти к выполненым заданиям</string>
     <string name="goToUncompletedBT">Перейти к активным заданиям</string>
     <string name="addTaskBT">Добавить задание</string>
