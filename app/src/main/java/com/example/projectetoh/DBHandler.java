@@ -7,14 +7,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.*;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 public class DBHandler extends SQLiteOpenHelper {
@@ -45,7 +40,7 @@ public class DBHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(IDCODE_COL, t.getIdCode().toString());
         values.put(DESC_COL, t.getDescription());
-        values.put(CATEG_COL, t.getCategory());
+        values.put(CATEG_COL,  t.getCategory().equals("")? "All":t.getCategory());
         values.put(DEADLINE_COL, t.getDeadline());
         values.put(NOTES_COL, t.getNotes());
         values.put(DONE_COL, t.isDone());
@@ -109,7 +104,7 @@ public class DBHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(IDCODE_COL, t.getIdCode().toString());
         values.put(DESC_COL, t.getDescription());
-        values.put(CATEG_COL, t.getCategory());
+        values.put(CATEG_COL, t.getCategory().equals("")? "All":t.getCategory());
         values.put(DEADLINE_COL, t.getDeadline());
         values.put(NOTES_COL, t.getNotes());
         values.put(DONE_COL, t.isDone());
